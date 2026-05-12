@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // ==================== ИМПОРТЫ СТРАНИЦ ====================
 import HomePage from './pages/HomePage';
@@ -13,7 +13,9 @@ import ContactsPage from './pages/ContactsPage';
 import InfoPage from './pages/InfoPage';
 
 // ==================== API СЕРВИС ====================
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : 'http://localhost:5000/api';
 
 const getToken = () => localStorage.getItem('token');
 
@@ -93,16 +95,16 @@ const api = {
   },
   
   orders: {
-  get: () => apiRequest('/orders'),
-  getOne: async (id) => {
-    const items = await apiRequest(`/orders/${id}`);
-    return items;
+    get: () => apiRequest('/orders'),
+    getOne: async (id) => {
+      const items = await apiRequest(`/orders/${id}`);
+      return items;
+    },
+    create: (data) => apiRequest('/orders', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
   },
-  create: (data) => apiRequest('/orders', {
-    method: 'POST',
-    body: JSON.stringify(data)
-  }),
-},
   
   promotions: {
     getAll: () => apiRequest('/promotions'),
@@ -241,18 +243,11 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   return children;
 };
 
-// ==================== КОМПОНЕНТ НАВИГАЦИИ ====================
-const Navbar = () => {
-  const { user, logout } = useAuth();
-  
-};
-
 // ==================== КОМПОНЕНТ APP ====================
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
         <Routes>
           {/* Публичные маршруты */}
           <Route path="/" element={<HomePage />} />
@@ -290,7 +285,7 @@ function App() {
             <div style={{padding: 50, textAlign: 'center'}}>
               <h1>404</h1>
               <p>Страница не найдена</p>
-              <Link to="/">Вернуться на главную</Link>
+              <a href="/">Вернуться на главную</a>
             </div>
           } />
         </Routes>
