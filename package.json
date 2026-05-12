@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
-    "start": "cd backend && npm start"
+    "start": "cd backend && npm install && node server.js",
+    "postinstall": "cd backend && npm install"
+  },
+  "engines": {
+    "node": "22.x",
+    "npm": "10.x"
   }
 }
