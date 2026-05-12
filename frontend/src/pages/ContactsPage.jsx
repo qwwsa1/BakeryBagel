@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../App';
 import styles from './ContactsPage.module.css';
 
 const ContactsPage = () => {
-  const { api } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,19 +20,19 @@ const ContactsPage = () => {
     coordinates: { lat: 55.751244, lng: 37.618423 }
   };
 
-  const showNotification = (message, type = 'success') => {
+  const showNotification = useCallback((message, type = 'success') => {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: '', type: '' }), 3000);
-  };
+  }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
+  const handleChange = useCallback((e) => {
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
-  };
+    }));
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.message) {
@@ -50,7 +48,7 @@ const ContactsPage = () => {
       setFormData({ name: '', email: '', message: '' });
       setSubmitting(false);
     }, 1000);
-  };
+  }, [formData.name, formData.email, formData.message, showNotification]);
 
   return (
     <div className={styles.page}>
@@ -129,7 +127,7 @@ const ContactsPage = () => {
             
             <div className={styles.contactDetails}>
               <div className={styles.contactItem}>
-                <img src="/images/iconaddress.svg" alt="Свежая выпечка" />
+                <img src="/images/iconaddress.svg" alt="Адрес" />
                 <div>
                   <h4>Адрес</h4>
                   <p>{contacts.address}</p>
@@ -137,7 +135,7 @@ const ContactsPage = () => {
               </div>
               
               <div className={styles.contactItem}>
-                <img src="/images/iconphone.svg" alt="Свежая выпечка" />
+                <img src="/images/iconphone.svg" alt="Телефон" />
                 <div>
                   <h4>Телефон</h4>
                   <p><a href={`tel:${contacts.phone}`}>{contacts.phone}</a></p>
@@ -145,7 +143,7 @@ const ContactsPage = () => {
               </div>
               
               <div className={styles.contactItem}>
-                <img src="/images/iconletter.svg" alt="Свежая выпечка" />
+                <img src="/images/iconletter.svg" alt="Email" />
                 <div>
                   <h4>Email</h4>
                   <p><a href={`mailto:${contacts.email}`}>{contacts.email}</a></p>
@@ -153,7 +151,7 @@ const ContactsPage = () => {
               </div>
               
               <div className={styles.contactItem}>
-                <img src="/images/iconclock.svg" alt="Свежая выпечка" />
+                <img src="/images/iconclock.svg" alt="Режим работы" />
                 <div>
                   <h4>Режим работы</h4>
                   <p>{contacts.workingHours}</p>
@@ -165,10 +163,20 @@ const ContactsPage = () => {
             <div className={styles.socialLinks}>
               <h4>Мы в соцсетях</h4>
               <div className={styles.socialIcons}>
-                <a href="#" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href="https://instagram.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
                   <img src="/images/Symbol.svg.svg" width="40" alt="Instagram" />
                 </a>
-                <a href="#" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href="https://vk.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="VK"
+                >
                   <img src="/images/vk_symbol.svg.svg" width="40" alt="VK" />
                 </a>
               </div>
@@ -178,7 +186,7 @@ const ContactsPage = () => {
           {/* Карта */}
           <div className={styles.mapContainer}>
             <iframe
-              title="map"
+              title="Карта расположения пекарни Bagel"
               src="https://yandex.ru/map-widget/v1/?ll=37.618423%2C55.751244&z=16"
               width="100%"
               height="100%"
@@ -239,7 +247,7 @@ const ContactsPage = () => {
           <img src="/images/MediumLogo.svg" alt="Логотип" />
         </div>
         <div className={styles.iconSocial}>
-          <img src="/images/Symbol.svg.svg" width="30" alt="Social" />
+          <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
           <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
         </div>
       </footer>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './AdminProfilePage.module.css';
@@ -37,22 +37,18 @@ const AdminProfilePage = () => {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
     
-    // Если путь уже содержит /uploads/ - добавляем http://localhost:5000
     if (imagePath.includes('/uploads/')) {
       return `http://localhost:5000${imagePath}`;
     }
     
-    // Если путь содержит /images/ - используем как есть (статика из папки public)
     if (imagePath.includes('/images/')) {
       return imagePath;
     }
     
-    // Если путь начинается с http - возвращаем как есть
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
     
-    // Fallback
     return null;
   };
 
@@ -64,13 +60,7 @@ const AdminProfilePage = () => {
   }, [isAdmin, navigate]);
 
   // Загрузка данных
-  useEffect(() => {
-    if (isAdmin) {
-      loadData();
-    }
-  }, [isAdmin, activeTab]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const promises = [];
@@ -111,7 +101,13 @@ const AdminProfilePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab, api]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      loadData();
+    }
+  }, [isAdmin, activeTab, loadData]);
 
   const showNotification = (message, type = 'success') => {
     setNotification({ show: true, message, type });
@@ -321,7 +317,6 @@ const AdminProfilePage = () => {
             </div>
           </div>
 
-          {/* Статистика */}
           {stats && (
             <div className={styles.statsGrid}>
               <div className={styles.statCard}>
@@ -343,7 +338,6 @@ const AdminProfilePage = () => {
             </div>
           )}
 
-          {/* Табы */}
           <div className={styles.tabs}>
             <button className={activeTab === 'dashboard' ? styles.active : ''} onClick={() => setActiveTab('dashboard')}>Статистика</button>
             <button className={activeTab === 'menu' ? styles.active : ''} onClick={() => setActiveTab('menu')}>Товары</button>
@@ -351,9 +345,7 @@ const AdminProfilePage = () => {
             <button className={activeTab === 'users' ? styles.active : ''} onClick={() => setActiveTab('users')}>Пользователи</button>
           </div>
 
-          {/* Контент табов */}
           <div className={styles.tabContent}>
-            {/* Статистика */}
             {activeTab === 'dashboard' && stats && (
               <div>
                 <div className={styles.recentOrdersSection}>
@@ -375,7 +367,6 @@ const AdminProfilePage = () => {
               </div>
             )}
 
-            {/* Управление товарами */}
             {activeTab === 'menu' && (
               <div className={styles.managementSection}>
                 <div className={styles.sectionHeader}>
@@ -429,8 +420,8 @@ const AdminProfilePage = () => {
                               <td>{product.category_name || '-'}</td>
                               <td>{product.is_available ? 'В наличии' : 'Нет в наличии'}</td>
                               <td>
-                                <button onClick={() => handleEditProduct(product)} className={styles.editBtn} title="Редактировать"><img src="/images/iconpen.svg" alt="Логотип" /></button>
-                                <button onClick={() => handleDeleteProduct(product.id)} className={styles.deleteBtn} title="Удалить"><img src="/images/iconcart.svg" alt="Логотип" /></button>
+                                <button onClick={() => handleEditProduct(product)} className={styles.editBtn} title="Редактировать">✏️</button>
+                                <button onClick={() => handleDeleteProduct(product.id)} className={styles.deleteBtn} title="Удалить">🗑️</button>
                               </td>
                             </tr>
                           );
@@ -442,7 +433,6 @@ const AdminProfilePage = () => {
               </div>
             )}
 
-            {/* Управление заказами */}
             {activeTab === 'orders' && (
               <div className={styles.managementSection}>
                 <h2>Заказы</h2>
@@ -497,7 +487,6 @@ const AdminProfilePage = () => {
               </div>
             )}
 
-            {/* Управление пользователями */}
             {activeTab === 'users' && (
               <div className={styles.managementSection}>
                 <h2>Пользователи</h2>
@@ -610,7 +599,7 @@ const AdminProfilePage = () => {
                     </div>
                   ) : (
                     <div className={styles.imagePlaceholder}>
-                      <span><img src="/images/iconphoto.svg" alt="Логотип" /></span>
+                      <span>📷</span>
                       <p>Нет изображения</p>
                     </div>
                   )}

@@ -105,7 +105,7 @@ const InfoPage = () => {
         <div className={styles.container}>
           <div className={styles.productionGrid}>
             <div className={styles.productionImage}>
-              <img src="/images/baker.svg" alt="Пекарня, приготовление теста" />
+              <img src="/images/baker.svg" alt="Пекарь за приготовлением теста" />
             </div>
             <div className={styles.productionText}>
               <p className={styles.productionParagraph}>
@@ -137,13 +137,13 @@ const InfoPage = () => {
       <section className={styles.gallery}>
         <div className={styles.galleryGrid}>
           <div className={styles.galleryItem}>
-            <img src="/images/interior-1.svg" alt="Интерьер пекарни" />
+            <img src="/images/interior-1.svg" alt="Интерьер пекарни - основное помещение" />
           </div>
           <div className={styles.galleryItem}>
-            <img src="/images/interior-2.svg" alt="Интерьер пекарни" />
+            <img src="/images/interior-2.svg" alt="Интерьер пекарни - стойка выдачи" />
           </div>
           <div className={styles.galleryItem}>
-            <img src="/images/interior-3.svg" alt="Интерьер пекарни" />
+            <img src="/images/interior-3.svg" alt="Интерьер пекарни - обеденная зона" />
           </div>
         </div>
       </section>
@@ -161,8 +161,22 @@ const InfoPage = () => {
           <img src="/images/MediumLogo.svg" alt="Логотип" />
         </div>
         <div className={styles.iconSocial}>
-          <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
-          <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          <a 
+            href="https://instagram.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
+          </a>
+          <a 
+            href="https://vk.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="VK"
+          >
+            <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          </a>
         </div>
       </footer>
     </div>

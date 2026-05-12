@@ -243,7 +243,7 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 
 // ==================== КОМПОНЕНТ НАВИГАЦИИ ====================
 const Navbar = () => {
-  const { isAuth, isAdmin, user, logout } = useAuth();
+  const { user, logout } = useAuth();
   
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './UserProfilePage.module.css';
@@ -23,27 +23,14 @@ const UserProfilePage = () => {
   const [orderItems, setOrderItems] = useState([]);
   const [loadingOrderItems, setLoadingOrderItems] = useState(false);
 
-  // Загрузка данных
-  useEffect(() => {
-    if (!isAuth) {
-      navigate('/auth');
-      return;
-    }
-    
-    loadUserData();
-  }, [isAuth]);
+  const showNotification = useCallback((message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: '' });
+    }, 3000);
+  }, []);
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.name || '',
-        phone: user.phone || '',
-        address: user.address || ''
-      });
-    }
-  }, [user]);
-
-  const loadUserData = async () => {
+  const loadUserData = useCallback(async () => {
     setLoading(true);
     try {
       const [ordersData, favoritesData] = await Promise.all([
@@ -58,35 +45,48 @@ const UserProfilePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [api.orders, api.favorites, showNotification]);
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ show: true, message, type });
-    setTimeout(() => {
-      setNotification({ show: false, message: '', type: '' });
-    }, 3000);
-  };
+  // Загрузка данных
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/auth');
+      return;
+    }
+    
+    loadUserData();
+  }, [isAuth, navigate, loadUserData]);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '',
+        address: user.address || ''
+      });
+    }
+  }, [user]);
+
+  const handleLogout = useCallback(() => {
     logout();
     navigate('/');
     showNotification('Вы вышли из аккаунта', 'success');
-  };
+  }, [logout, navigate, showNotification]);
 
-  const handleEditProfile = () => {
+  const handleEditProfile = useCallback(() => {
     setEditing(true);
-  };
+  }, []);
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     setEditing(false);
     setFormData({
       name: user?.name || '',
       phone: user?.phone || '',
       address: user?.address || ''
     });
-  };
+  }, [user]);
 
-  const handleSaveProfile = async () => {
+  const handleSaveProfile = useCallback(async () => {
     try {
       const result = await updateProfile(formData);
       if (result.success) {
@@ -98,16 +98,16 @@ const UserProfilePage = () => {
     } catch (error) {
       showNotification('Ошибка при сохранении', 'error');
     }
-  };
+  }, [updateProfile, formData, showNotification]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
+  const handleChange = useCallback((e) => {
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
-  };
+    }));
+  }, []);
 
-  const removeFromFavorites = async (productId) => {
+  const removeFromFavorites = useCallback(async (productId) => {
     try {
       await api.favorites.remove(productId);
       await loadUserData();
@@ -115,35 +115,35 @@ const UserProfilePage = () => {
     } catch (error) {
       showNotification('Ошибка при удалении', 'error');
     }
-  };
+  }, [api.favorites, loadUserData, showNotification]);
 
   // Просмотр деталей заказа
-  const viewOrderDetails = async (order) => {
-  setSelectedOrder(order);
-  setLoadingOrderItems(true);
-  try {
-    const items = await api.orders.getOne(order.id);
-    setOrderItems(items || []);
-  } catch (error) {
-    console.error('Ошибка загрузки товаров заказа:', error);
-    setOrderItems([]);
-    showNotification('Ошибка загрузки деталей заказа', 'error');
-  } finally {
-    setLoadingOrderItems(false);
-  }
-};
+  const viewOrderDetails = useCallback(async (order) => {
+    setSelectedOrder(order);
+    setLoadingOrderItems(true);
+    try {
+      const items = await api.orders.getOne(order.id);
+      setOrderItems(items || []);
+    } catch (error) {
+      console.error('Ошибка загрузки товаров заказа:', error);
+      setOrderItems([]);
+      showNotification('Ошибка загрузки деталей заказа', 'error');
+    } finally {
+      setLoadingOrderItems(false);
+    }
+  }, [api.orders, showNotification]);
 
-  const closeOrderDetails = () => {
+  const closeOrderDetails = useCallback(() => {
     setSelectedOrder(null);
     setOrderItems([]);
-  };
+  }, []);
 
   // Переход в админ-панель
-  const goToAdmin = () => {
+  const goToAdmin = useCallback(() => {
     navigate('/admin');
-  };
+  }, [navigate]);
 
-  const getStatusText = (status) => {
+  const getStatusText = useCallback((status) => {
     const statusMap = {
       'pending': 'Ожидает',
       'processing': 'Готовится',
@@ -151,9 +151,9 @@ const UserProfilePage = () => {
       'cancelled': 'Отменен'
     };
     return statusMap[status] || status;
-  };
+  }, []);
 
-  const getStatusClass = (status) => {
+  const getStatusClass = useCallback((status) => {
     const classMap = {
       'pending': styles.statusPending,
       'processing': styles.statusProcessing,
@@ -161,7 +161,7 @@ const UserProfilePage = () => {
       'cancelled': styles.statusCancelled
     };
     return classMap[status] || '';
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -424,8 +424,12 @@ const UserProfilePage = () => {
           <img src="/images/MediumLogo.svg" alt="Логотип" />
         </div>
         <div className={styles.iconSocial}>
-          <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
-          <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
+          </a>
+          <a href="https://vk.com" target="_blank" rel="noopener noreferrer" aria-label="VK">
+            <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          </a>
         </div>
       </footer>
     </div>

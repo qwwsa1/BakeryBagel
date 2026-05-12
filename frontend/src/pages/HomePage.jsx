@@ -1,30 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
   const { api } = useAuth();
-  const [stats, setStats] = useState(null);
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadHomeData();
-  }, []);
-
-  const loadHomeData = async () => {
+  const loadHomeData = useCallback(async () => {
     try {
-      const [promosData] = await Promise.all([
-        api.promotions.getAll().catch(() => [])
-      ]);
+      const promosData = await api.promotions.getAll().catch(() => []);
       setPromotions(promosData);
     } catch (error) {
       console.error('Ошибка загрузки данных:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [api.promotions]);
+
+  useEffect(() => {
+    loadHomeData();
+  }, [loadHomeData]);
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loader}>Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -64,9 +69,9 @@ const HomePage = () => {
 
       {/* Hero секция */}
       <section 
-  className={styles.hero} 
-  style={{ backgroundImage: `url('/images/bakeryinterior.png')` }}
->
+        className={styles.hero} 
+        style={{ backgroundImage: `url('/images/bakeryinterior.png')` }}
+      >
         <div className={styles.heroOverlay}>
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>Bagel'</h1>
@@ -110,7 +115,7 @@ const HomePage = () => {
             <div className={styles.promotionsGrid}>
               {promotions.slice(0, 3).map(promo => (
                 <div key={promo.id} className={styles.promoCard}>
-                  <img src="/images/iconsale.svg" alt="Свежая выпечка" />
+                  <img src="/images/iconsale.svg" alt="Акция" />
                   <h3>{promo.title}</h3>
                   <p>{promo.description}</p>
                   {promo.discount_percent && (
@@ -134,17 +139,17 @@ const HomePage = () => {
               <p>Каждый день с 8 утра мы печем свежие бейглы</p>
             </div>
             <div className={styles.advantageCard}>
-              <img src="/images/iconnatural.svg" alt="Свежая выпечка" />
+              <img src="/images/iconnatural.svg" alt="Натуральные ингредиенты" />
               <h3>Натуральные ингредиенты</h3>
               <p>Используем только качественные продукты</p>
             </div>
             <div className={styles.advantageCard}>
-              <img src="/images/icondelivery.svg" alt="Свежая выпечка" />
+              <img src="/images/icondelivery.svg" alt="Быстрая доставка" />
               <h3>Быстрая доставка</h3>
               <p>Доставим заказ в течение часа</p>
             </div>
             <div className={styles.advantageCard}>
-              <img src="/images/iconcard.svg" alt="Свежая выпечка" />
+              <img src="/images/iconcard.svg" alt="Удобная оплата" />
               <h3>Удобная оплата</h3>
               <p>Картой онлайн или наличными при получении</p>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './CheckoutPage.module.css';
@@ -21,12 +21,14 @@ const CheckoutPage = () => {
     payment_method: 'card'
   });
 
-  // Загрузка корзины
-  useEffect(() => {
-    loadCart();
+  const showNotification = useCallback((message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: '' });
+    }, 3000);
   }, []);
 
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     try {
       const data = await api.cart.get();
       if (data.length === 0) {
@@ -39,26 +41,23 @@ const CheckoutPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [api.cart, navigate, showNotification]);
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ show: true, message, type });
-    setTimeout(() => {
-      setNotification({ show: false, message: '', type: '' });
-    }, 3000);
-  };
+  // Загрузка корзины
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
+  const handleChange = useCallback((e) => {
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
-  };
+    }));
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
-    // Валидация
     if (!formData.delivery_address) {
       showNotification('Введите адрес доставки', 'error');
       return;
@@ -100,23 +99,23 @@ const CheckoutPage = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [formData, api.orders, showNotification, navigate]);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = subtotal > 3000 ? 0 : 299;
   const total = subtotal + deliveryFee;
 
-  const getMinDate = () => {
+  const getMinDate = useCallback(() => {
     const date = new Date();
     date.setDate(date.getDate() + 1);
     return date.toISOString().split('T')[0];
-  };
+  }, []);
 
-  const getMaxDate = () => {
+  const getMaxDate = useCallback(() => {
     const date = new Date();
     date.setDate(date.getDate() + 30);
     return date.toISOString().split('T')[0];
-  };
+  }, []);
 
   if (loading) {
     return (

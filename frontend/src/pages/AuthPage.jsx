@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './AuthPage.module.css';
@@ -17,21 +17,21 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   // Валидация имени (только буквы и пробелы, без цифр)
-  const validateName = (name) => {
+  const validateName = useCallback((name) => {
     if (/\d/.test(name)) {
       return 'Имя не может содержать цифры';
     }
     return '';
-  };
+  }, []);
 
   // Валидация email
-  const validateEmail = (email) => {
+  const validateEmail = useCallback((email) => {
     const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
     if (!emailRegex.test(email)) {
       return 'Введите корректный email';
     }
     return '';
-  };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +39,6 @@ const AuthPage = () => {
     // Для поля имени - блокируем ввод цифр
     if (name === 'name') {
       if (/\d/.test(value)) {
-        // Если пользователь пытается ввести цифру, просто игнорируем
         return;
       }
     }
@@ -57,7 +56,6 @@ const AuthPage = () => {
     
     // Валидация для регистрации
     if (!isLogin) {
-      // Проверка имени на цифры
       const nameError = validateName(formData.name);
       if (nameError) {
         setError(nameError);
@@ -69,7 +67,6 @@ const AuthPage = () => {
         return;
       }
       
-      // Проверка email
       const emailError = validateEmail(formData.email);
       if (emailError) {
         setError(emailError);
@@ -86,7 +83,6 @@ const AuthPage = () => {
         return;
       }
     } else {
-      // Для входа тоже проверяем email
       const emailError = validateEmail(formData.email);
       if (emailError) {
         setError(emailError);

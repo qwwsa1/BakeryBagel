@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './CartPage.module.css';
@@ -12,16 +12,14 @@ const CartPage = () => {
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
   const [updatingId, setUpdatingId] = useState(null);
 
-  // Загрузка корзины
-  useEffect(() => {
-    if (isAuth) {
-      loadCart();
-    } else {
-      setLoading(false);
-    }
-  }, [isAuth]);
+  const showNotification = useCallback((message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: '' });
+    }, 2000);
+  }, []);
 
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     setLoading(true);
     try {
       const data = await api.cart.get();
@@ -32,16 +30,18 @@ const CartPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [api.cart, showNotification]);
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ show: true, message, type });
-    setTimeout(() => {
-      setNotification({ show: false, message: '', type: '' });
-    }, 2000);
-  };
+  // Загрузка корзины
+  useEffect(() => {
+    if (isAuth) {
+      loadCart();
+    } else {
+      setLoading(false);
+    }
+  }, [isAuth, loadCart]);
 
-  const updateQuantity = async (id, change) => {
+  const updateQuantity = useCallback(async (id, change) => {
     const currentItem = cartItems.find(item => item.id === id);
     if (!currentItem) return;
     
@@ -57,9 +57,9 @@ const CartPage = () => {
     } finally {
       setUpdatingId(null);
     }
-  };
+  }, [cartItems, api.cart, loadCart, showNotification]);
 
-  const removeItem = async (id) => {
+  const removeItem = useCallback(async (id) => {
     if (!window.confirm('Удалить товар из корзины?')) return;
     
     setUpdatingId(id);
@@ -72,9 +72,9 @@ const CartPage = () => {
     } finally {
       setUpdatingId(null);
     }
-  };
+  }, [api.cart, loadCart, showNotification]);
 
-  const clearCart = async () => {
+  const clearCart = useCallback(async () => {
     if (!window.confirm('Очистить всю корзину?')) return;
     
     try {
@@ -84,15 +84,15 @@ const CartPage = () => {
     } catch (error) {
       showNotification('Ошибка при очистке', 'error');
     }
-  };
+  }, [api.cart, loadCart, showNotification]);
 
-  const proceedToCheckout = () => {
+  const proceedToCheckout = useCallback(() => {
     if (cartItems.length === 0) {
       showNotification('Корзина пуста', 'error');
       return;
     }
     navigate('/checkout');
-  };
+  }, [cartItems.length, showNotification, navigate]);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = subtotal > 50 ? 0 : 5.99;
@@ -221,7 +221,7 @@ const CartPage = () => {
                       <img 
                         src={item.image || '/images/med.svg'} 
                         alt={item.name}
-                        onError={(e) => { e.target.src = '/images/med.svg' }}
+                        onError={(e) => { e.target.src = '/images/med.svg'; }}
                       />
                     </div>
                     

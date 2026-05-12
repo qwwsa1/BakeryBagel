@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../App';
 import styles from './MenuPage.module.css';
@@ -22,38 +22,29 @@ const MenuPage = () => {
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
   // Функция для получения правильного URL изображения
-  const getImageUrl = (imagePath) => {
+  const getImageUrl = useCallback((imagePath) => {
     if (!imagePath) return '/images/med.svg';
     
-    // Если путь уже содержит /uploads/ - добавляем http://localhost:5000
     if (imagePath.includes('/uploads/')) {
       return `http://localhost:5000${imagePath}`;
     }
     
-    // Если путь содержит /images/ - используем как есть (статика из папки public)
     if (imagePath.includes('/images/')) {
       return imagePath;
     }
     
-    // Fallback
     return '/images/med.svg';
-  };
+  }, []);
 
-  // Debounce для поиска
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
+  const showNotification = useCallback((message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: '' });
+    }, 2000);
+  }, []);
 
   // Загрузка товаров
-  useEffect(() => {
-    loadProducts();
-    loadCategories();
-  }, [selectedCategory, debouncedSearchTerm, sortBy]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -70,25 +61,32 @@ const MenuPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, debouncedSearchTerm, sortBy, api.products, showNotification]);
 
-  const loadCategories = async () => {
+  const loadCategories = useCallback(async () => {
     try {
       const data = await api.products.getCategories();
       setCategories(data);
     } catch (error) {
       console.error('Ошибка загрузки категорий:', error);
     }
-  };
+  }, [api.products]);
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ show: true, message, type });
-    setTimeout(() => {
-      setNotification({ show: false, message: '', type: '' });
-    }, 2000);
-  };
+  // Debounce для поиска
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
-  const addToCart = async (productId) => {
+  // Загрузка товаров и категорий при изменении фильтров
+  useEffect(() => {
+    loadProducts();
+    loadCategories();
+  }, [selectedCategory, debouncedSearchTerm, sortBy, loadProducts, loadCategories]);
+
+  const addToCart = useCallback(async (productId) => {
     if (!isAuth) {
       showNotification('Войдите в аккаунт чтобы добавить товар в корзину', 'error');
       return;
@@ -99,9 +97,9 @@ const MenuPage = () => {
     } catch (error) {
       showNotification('Ошибка при добавлении в корзину', 'error');
     }
-  };
+  }, [isAuth, api.cart, showNotification]);
 
-  const addToFavorites = async (productId) => {
+  const addToFavorites = useCallback(async (productId) => {
     if (!isAuth) {
       showNotification('Войдите в аккаунт чтобы добавить в избранное', 'error');
       return;
@@ -112,12 +110,13 @@ const MenuPage = () => {
     } catch (error) {
       showNotification('Ошибка при добавлении в избранное', 'error');
     }
-  };
+  }, [isAuth, api.favorites, showNotification]);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
+  // Обработчик скролла для кнопки
   useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY > 200);
@@ -126,11 +125,11 @@ const MenuPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const getProductsByCategory = (categoryName) => {
+  const getProductsByCategory = useCallback((categoryName) => {
     const category = categories.find(c => c.name === categoryName);
     if (!category) return [];
     return products.filter(p => p.category_id === category.id);
-  };
+  }, [categories, products]);
 
   const availableCategories = [...new Set(products.map(p => {
     const cat = categories.find(c => c.id === p.category_id);
@@ -328,8 +327,12 @@ const MenuPage = () => {
           <img src="/images/MediumLogo.svg" alt="Логотип" />
         </div>
         <div className={styles.iconSocial}>
-          <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
-          <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
+          </a>
+          <a href="https://vk.com" target="_blank" rel="noopener noreferrer" aria-label="VK">
+            <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          </a>
         </div>
       </footer>
     </div>
