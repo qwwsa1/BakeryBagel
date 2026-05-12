@@ -1,0 +1,773 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===== БАЗОВЫЕ СТИЛИ ===== */
+.page {
+  font-family: 'MuseoModerno', sans-serif;
+  background-color: #FFFDF6;
+  margin-top: 80px;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== УВЕДОМЛЕНИЯ ===== */
+.notification {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  z-index: 1100;
+  animation: slideIn 0.3s ease;
+  font-weight: 500;
+  font-family: 'MuseoModerno', sans-serif;
+}
+
+.notification.success {
+  background: #2e7d32;
+  color: white;
+}
+
+.notification.error {
+  background: #d32f2f;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== ЗАГРУЗЧИК (ДОБАВЛЕНО) ===== */
+.loader {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #e67e22;
+  margin-top: 200px;
+}
+
+/* ===== ХЕДЕР ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #FFFDF6;
+  padding-top: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo img {
+  height: 40px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.menu li {
+  margin: 0;
+}
+
+.menu a {
+  color: #672E13;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #F0B66C;
+}
+
+.menu a p {
+  margin: 0;
+}
+
+.cartIcon img {
+  height: 30px;
+  margin-right: 0;
+  transition: all 0.3s;
+}
+
+.cartIcon img:hover {
+  transform: scale(1.1);
+}
+
+.line {
+  height: 1px;
+  background-color: #672E13;
+  border: none;
+  margin: 10px 0 0 0;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  min-height: calc(100vh - 80px);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.heroContent {
+  text-align: center;
+  z-index: 2;
+  color: #FFFDF6;
+  margin-top: 70px;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.heroTitle {
+  font-size: 72px;
+  margin: 0;
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  line-height: 1.1;
+}
+
+.heroText {
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 700px;
+  opacity: 0.95;
+}
+
+/* Карточка с адресом и временем */
+.infoCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 30px 60px;
+  margin: 20px 0;
+  background: rgba(103, 46, 19, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+}
+
+.infoLabel {
+  font-size: 14px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.infoValue {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.infoDivider {
+  width: 2px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.heroBottomText {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 500;
+  opacity: 0.95;
+  margin-top: 20px;
+}
+
+/* ===== КОНТАКТНАЯ СЕКЦИЯ ===== */
+.contactSection {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.contactContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .contactContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contactInfo h2 {
+  font-size: 28px;
+  color: #672E13;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.contactDetails {
+  margin-bottom: 30px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 10px;
+  border-radius: 15px;
+  transition: all 0.3s;
+}
+
+.contactItem:hover {
+  background: rgba(240, 182, 108, 0.1);
+  transform: translateX(5px);
+}
+
+.contactIcon {
+  font-size: 32px;
+}
+
+.contactItem h4 {
+  margin: 0 0 5px 0;
+  color: #672E13;
+  font-weight: 700;
+}
+
+.contactItem p {
+  margin: 0;
+  color: #666;
+}
+
+.contactItem a {
+  color: #e67e22;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contactItem a:hover {
+  color: #F0B66C;
+  text-decoration: underline;
+}
+
+/* Социальные сети */
+.socialLinks h4 {
+  margin-bottom: 15px;
+  color: #672E13;
+  font-weight: 700;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 15px;
+}
+
+.socialIcons a {
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.socialIcons a:hover {
+  transform: scale(1.1);
+}
+
+/* Карта */
+.mapContainer {
+  height: 400px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(103, 46, 19, 0.1);
+  border: 2px solid #F0B66C;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== ФОРМА ОБРАТНОЙ СВЯЗИ ===== */
+.feedbackSection {
+  padding: 60px 20px;
+  background: #fdf8f0;
+}
+
+.feedbackContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.feedbackContainer h2 {
+  font-size: 28px;
+  color: #672E13;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.feedbackForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .heroOverlay{
+position: relative;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feedbackForm input,
+.feedbackForm textarea {
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  font-size: 16px;
+  font-family: 'MuseoModerno', sans-serif;
+  transition: all 0.3s;
+  background: white;
+}
+
+.feedbackForm input:focus,
+.feedbackForm textarea:focus {
+  outline: none;
+  border-color: #F0B66C;
+  box-shadow: 0 0 0 3px rgba(240, 182, 108, 0.3);
+}
+
+.feedbackForm button {
+  background: #672E13;
+  color: #FFFDF6;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'MuseoModerno', sans-serif;
+}
+
+.feedbackForm button:hover:not(:disabled) {
+  background: #F0B66C;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(103, 46, 19, 0.3);
+}
+
+.feedbackForm button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ===== КНОПКА НАВЕРХ (ДОБАВЛЕНО) ===== */
+.toTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #FFFDF6;
+  box-shadow: 0 2px 8px rgba(103,46,19,0.2);
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #672E13;
+}
+
+.toTopBtn:hover {
+  box-shadow: 0 4px 16px rgba(103,46,19,0.3);
+  transform: scale(1.1);
+}
+
+.toTopBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: #FFFDF6;
+  color: #672E13;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #672E13;
+}
+
+.mediumLogo img {
+  height: 60px;
+  margin-right: 0;
+  order: -1;
+  transition: transform 0.3s;
+}
+
+.mediumLogo img:hover {
+  transform: scale(1.05);
+}
+
+.infoFooter {
+  margin-left: 0;
+}
+
+.infoFooter p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.iconSocial {
+  margin-right: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.iconSocial img {
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconSocial img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (min-width: 768px) {
+  
+  .header {
+    font-size: 18px;
+    padding-top: 15px;
+  }
+  
+  .container {
+    padding: 0 30px;
+    flex-wrap: nowrap;
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .menu ul {
+    gap: 25px;
+  }
+  
+  .menu a {
+    font-size: 16px;
+  }
+  
+  .cartIcon img {
+    height: 35px;
+  }
+  
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+  
+  .mediumLogo img {
+    height: 70px;
+    order: 0;
+  }
+  
+  .infoFooter p {
+    font-size: 16px;
+  }
+  
+  .toTopBtn {
+    width: 56px;
+    height: 56px;
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding: 0 60px;
+  }
+  
+  .logo img {
+    height: 60px;
+    margin-left: 20px;
+  }
+  
+  .menu ul {
+    gap: 40px;
+  }
+  
+  .cartIcon img {
+    height: 40px;
+    margin-right: 20px;
+  }
+  
+  .footer {
+    padding: 20px 50px;
+  }
+  
+  .mediumLogo img {
+    height: 80px;
+    margin-right: 50px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 56px;
+  }
+  
+  .infoCard {
+    padding: 25px 40px;
+    gap: 30px;
+  }
+  
+  .infoValue {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .menu ul {
+    gap: 15px;
+  }
+  
+  .menu a {
+    font-size: 12px;
+  }
+  
+  .hero {
+    min-height: 500px;
+  }
+  
+  .heroTitle {
+    font-size: 40px;
+  }
+  
+  .heroText {
+    font-size: 16px;
+  }
+  
+  .infoCard {
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px 30px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .infoDivider {
+    width: 60px;
+    height: 2px;
+  }
+  
+  .infoValue {
+    font-size: 18px;
+  }
+  
+  .heroBottomText {
+    font-size: 16px;
+  }
+  
+  .contactSection,
+  .feedbackSection {
+    padding: 40px 20px;
+  }
+  
+  .contactInfo h2,
+  .feedbackContainer h2 {
+    font-size: 24px;
+  }
+  
+  .contactItem {
+    padding: 8px;
+  }
+  
+  .contactIcon {
+    font-size: 28px;
+  }
+  
+  .mapContainer {
+    height: 300px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  
+  .infoFooter {
+    order: 2;
+  }
+  
+  .mediumLogo {
+    order: 1;
+  }
+  
+  .iconSocial {
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+  margin-top: 20px;
+}
+  .logo img {
+    height: 35px;
+  }
+  
+  .menu a {
+    font-size: 10px;
+  }
+  
+  .cartIcon img {
+    height: 25px;
+  }
+  
+  
+  .heroTitle {
+    font-size: 28px;
+  }
+  
+  .heroText {
+    font-size: 14px;
+  }
+  
+  .infoCard {
+    border-width: 1px;
+    padding: 20px;
+  }
+  
+  .infoLabel {
+    font-size: 11px;
+  }
+  
+  .infoValue {
+    font-size: 14px;
+  }
+  
+  .heroBottomText {
+    font-size: 14px;
+  }
+  
+  .contactInfo h2,
+  .feedbackContainer h2 {
+    font-size: 20px;
+  }
+  
+  .contactIcon {
+    font-size: 24px;
+  }
+  
+  .contactItem h4 {
+    font-size: 14px;
+  }
+  
+  .contactItem p {
+    font-size: 12px;
+  }
+  
+  .feedbackForm input,
+  .feedbackForm textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  
+  .feedbackForm button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  
+  .mapContainer {
+    height: 250px;
+  }
+}

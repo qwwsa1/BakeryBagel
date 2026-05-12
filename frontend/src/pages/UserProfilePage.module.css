@@ -1,0 +1,957 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  font-family: 'MuseoModerno', sans-serif;
+  background-color: #FFFDF6;
+  margin-top: 80px;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== УВЕДОМЛЕНИЯ ===== */
+.notification {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  z-index: 1100;
+  animation: slideIn 0.3s ease;
+  font-weight: 500;
+  font-family: 'MuseoModerno', sans-serif;
+}
+
+.notification.success {
+  background: #2e7d32;
+  color: white;
+}
+
+.notification.error {
+  background: #d32f2f;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== ЗАГРУЗЧИК ===== */
+.loader {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #e67e22;
+  margin-top: 200px;
+}
+
+/* ===== ХЕДЕР ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #FFFDF6;
+  padding-top: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo img {
+  height: 40px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.menu li {
+  margin: 0;
+}
+
+.menu a {
+  color: #672E13;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #F0B66C;
+}
+
+.menu a p {
+  margin: 0;
+}
+
+.cartIcon img {
+  height: 30px;
+  margin-right: 0;
+  transition: all 0.3s;
+}
+
+.cartIcon img:hover {
+  transform: scale(1.1);
+}
+
+.line {
+  height: 1px;
+  background-color: #672E13;
+  border: none;
+  margin: 10px 0 0 0;
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+.mainContent {
+  flex: 1;
+  padding: 40px 15px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.profileHeader h1 {
+  font-size: 32px;
+  color: #672E13;
+  margin: 0;
+  font-weight: 700;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: 2px solid #d32f2f;
+  color: #d32f2f;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logoutBtn:hover {
+  background: #d32f2f;
+  color: #FFFDF6;
+  transform: translateY(-2px);
+}
+
+/* ===== КАРТОЧКИ ===== */
+.profileInfo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+}
+
+.infoCard {
+  background: #fff;
+  border: 2px solid #672E13;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(103, 46, 19, 0.1);
+  transition: all 0.3s;
+}
+
+.infoCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(103, 46, 19, 0.15);
+}
+
+.infoCard h3 {
+  font-size: 22px;
+  color: #672E13;
+  margin: 0 0 20px 0;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #F0B66C;
+  font-weight: 700;
+}
+
+.infoCard p {
+  font-size: 16px;
+  color: #672E13;
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+/* ===== ФОРМА РЕДАКТИРОВАНИЯ ===== */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.formGroup label {
+  font-weight: 700;
+  color: #672E13;
+  font-size: 14px;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 12px;
+  border: 2px solid rgba(103, 46, 19, 0.3);
+  border-radius: 15px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 14px;
+  background: #FFFDF6;
+  transition: all 0.3s;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #F0B66C;
+  box-shadow: 0 0 0 3px rgba(240, 182, 108, 0.3);
+}
+
+.editButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.saveBtn {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.saveBtn:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.cancelBtn {
+  background: #999;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancelBtn:hover {
+  background: #777;
+  transform: translateY(-2px);
+}
+
+.editBtn {
+  background: #F0B66C;
+  border: none;
+  color: #672E13;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s;
+}
+
+.editBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(240, 182, 108, 0.4);
+}
+
+/* ===== ЗАКАЗЫ ===== */
+.orderItem {
+  background: #FFFDF6;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(103, 46, 19, 0.2);
+  transition: all 0.3s;
+}
+
+.orderItem:hover {
+  transform: translateX(5px);
+  border-color: #F0B66C;
+}
+
+.orderInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.orderInfo:last-child {
+  margin-bottom: 0;
+}
+
+.orderNumber {
+  font-weight: 700;
+  color: #672E13;
+  font-size: 14px;
+}
+
+.orderDate {
+  color: #999;
+  font-size: 12px;
+}
+
+.orderTotal {
+  font-weight: 700;
+  color: #e67e22;
+  font-size: 16px;
+}
+
+/* Статусы заказов */
+.statusPending {
+  background: #f39c12;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.statusProcessing {
+  background: #3498db;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.statusDelivered {
+  background: #2e7d32;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.statusCancelled {
+  background: #d32f2f;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ===== ИЗБРАННОЕ ===== */
+.favoriteItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: #FFFDF6;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(103, 46, 19, 0.2);
+  transition: all 0.3s;
+}
+
+.favoriteItem:hover {
+  transform: translateX(5px);
+  border-color: #F0B66C;
+}
+
+.favoriteInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.favoriteName {
+  font-weight: 700;
+  color: #672E13;
+}
+
+.favoritePrice {
+  color: #e67e22;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.favoriteActions {
+  display: flex;
+  gap: 10px;
+}
+
+.buyLink {
+  background: #672E13;
+  color: #FFFDF6;
+  text-decoration: none;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.buyLink:hover {
+  background: #F0B66C;
+  transform: scale(1.05);
+}
+
+.removeFavBtn {
+  background: none;
+  border: 2px solid #d32f2f;
+  color: #d32f2f;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.removeFavBtn:hover {
+  background: #d32f2f;
+  color: white;
+}
+
+/* ===== КНОПКИ "ВСЕ" ===== */
+.viewAll {
+  background: none;
+  border: none;
+  color: #672E13;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  font-family: 'MuseoModerno', sans-serif;
+}
+
+.viewAll:hover {
+  background: rgba(240, 182, 108, 0.2);
+}
+
+.viewAllLink {
+  display: inline-block;
+  margin-top: 15px;
+  color: #672E13;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.viewAllLink:hover {
+  background: rgba(240, 182, 108, 0.2);
+}
+
+.emptyText {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: #FFFDF6;
+  color: #672E13;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #672E13;
+}
+
+.mediumLogo img {
+  height: 60px;
+  margin-right: 0;
+  order: -1;
+  transition: transform 0.3s;
+}
+
+.mediumLogo img:hover {
+  transform: scale(1.05);
+}
+
+.infoFooter {
+  margin-left: 0;
+}
+
+.infoFooter p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.iconSocial {
+  margin-right: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.iconSocial img {
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconSocial img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (min-width: 768px) {
+  
+  .header {
+    font-size: 18px;
+    padding-top: 15px;
+  }
+  
+  .container {
+    padding: 0 30px;
+    flex-wrap: nowrap;
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .menu ul {
+    gap: 25px;
+  }
+  
+  .menu a {
+    font-size: 16px;
+  }
+  
+  .cartIcon img {
+    height: 35px;
+  }
+  
+  .mainContent {
+    padding: 50px 30px;
+  }
+  
+  .profileInfo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .infoCard:first-child {
+    grid-column: span 2;
+  }
+  
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+  
+  .mediumLogo img {
+    height: 70px;
+    order: 0;
+  }
+  
+  .infoFooter p {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding: 0 60px;
+  }
+  
+  .logo img {
+    height: 60px;
+    margin-left: 20px;
+  }
+  
+  .menu ul {
+    gap: 40px;
+  }
+  
+  .cartIcon img {
+    height: 40px;
+    margin-right: 20px;
+  }
+  
+  .mainContent {
+    padding: 60px;
+  }
+  
+  .profileInfo {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .infoCard:first-child {
+    grid-column: span 1;
+  }
+  
+  .footer {
+    padding: 20px 50px;
+  }
+  
+  .mediumLogo img {
+    height: 80px;
+    margin-right: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .menu ul {
+    gap: 15px;
+  }
+  
+  .menu a {
+    font-size: 12px;
+  }
+  
+  .profileHeader h1 {
+    font-size: 24px;
+  }
+  
+  .logoutBtn {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+  
+  .infoCard h3 {
+    font-size: 18px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  
+  .infoFooter {
+    order: 2;
+  }
+  
+  .mediumLogo {
+    order: 1;
+  }
+  
+  .iconSocial {
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+  margin-top: 40px;
+}
+  .logo img {
+    height: 35px;
+  }
+  
+  .menu a {
+    font-size: 10px;
+  }
+  
+  .cartIcon img {
+    height: 25px;
+  }
+  
+  .profileHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profileHeader h1 {
+    font-size: 20px;
+  }
+  
+  .infoCard {
+    padding: 15px;
+  }
+  
+  .infoCard p {
+    font-size: 14px;
+  }
+  
+  .orderInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .favoriteItem {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .favoriteActions {
+    justify-content: center;
+  }
+}
+
+/* Кнопка админ-панели */
+.headerButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.adminBtn {
+  background: #672E13;
+  border: none;
+  color: #FFFDF6;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.adminBtn:hover {
+  background: #672E13;
+  transform: translateY(-2px);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .headerButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .adminBtn, .logoutBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminBtn, .logoutBtn {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Кнопка деталей заказа */
+.detailsBtn {
+  background: #F0B66C;
+  border: none;
+  color: #672E13;
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-left: 10px;
+}
+
+.detailsBtn:hover {
+  background: #e69c42;
+  transform: scale(1.05);
+}
+
+/* Модальное окно */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modalContent {
+  background: #FFFDF6;
+  border-radius: 30px;
+  padding: 30px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 2px solid #672E13;
+}
+
+.modalContent h2 {
+  color: #672E13;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+/* Детали заказа */
+.orderInfoSection {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(103, 46, 19, 0.2);
+}
+
+.orderInfoSection h3,
+.orderItemsSection h3 {
+  font-size: 18px;
+  color: #672E13;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.orderInfoSection p {
+  margin: 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.orderInfoSection strong {
+  color: #672E13;
+  min-width: 120px;
+  display: inline-block;
+}
+
+/* Таблица товаров */
+.orderItemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.orderItemsTable th {
+  text-align: left;
+  padding: 10px;
+  background: rgba(103, 46, 19, 0.1);
+  color: #672E13;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.orderItemsTable td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(103, 46, 19, 0.1);
+  color: #333;
+  font-size: 14px;
+}
+
+.orderItemsTable tfoot tr {
+  background: rgba(240, 182, 108, 0.1);
+}
+
+.orderItemsTable tfoot td {
+  font-weight: 700;
+  padding: 12px 10px;
+}
+
+.totalLabel {
+  text-align: right;
+  color: #672E13;
+}
+
+.totalAmount {
+  color: #e67e22;
+  font-size: 16px;
+}
+
+.loadingText {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+}
+
+/* Кнопки модального окна */
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.closeDetailsBtn {
+  background: #672E13;
+  color: #FFFDF6;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'MuseoModerno', sans-serif;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.closeDetailsBtn:hover {
+  background: #F0B66C;
+  transform: translateY(-2px);
+}

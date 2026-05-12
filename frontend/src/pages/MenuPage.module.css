@@ -1,0 +1,698 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===== БАЗОВЫЕ СТИЛИ ===== */
+.page {
+  font-family: 'MuseoModerno', sans-serif;
+  background-color: #FFFDF6;
+  margin-top: 100px;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== УВЕДОМЛЕНИЯ ===== */
+.notification {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  z-index: 1100;
+  animation: slideIn 0.3s ease;
+  font-weight: 500;
+  font-family: 'MuseoModerno', sans-serif;
+}
+
+.notification.success {
+  background: #2e7d32;
+  color: white;
+}
+
+.notification.error {
+  background: #d32f2f;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== ЗАГРУЗЧИК ===== */
+.loader {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #e67e22;
+  margin-top: 200px;
+}
+
+/* ===== ХЕДЕР ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #FFFDF6;
+  padding-top: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo img {
+  height: 40px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.menu li {
+  margin: 0;
+}
+
+.menu a {
+  color: #672E13;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #F0B66C;
+}
+
+.menu a p {
+  margin: 0;
+}
+
+.cartIcon img {
+  height: 30px;
+  margin-right: 0;
+  transition: all 0.3s;
+}
+
+.cartIcon img:hover {
+  transform: scale(1.1);
+}
+
+.line {
+  height: 1px;
+  background-color: #672E13;
+  border: none;
+  margin: 10px 0 0 0;
+}
+
+/* ===== ФИЛЬТРЫ ===== */
+.filtersSection {
+  max-width: 1400px;
+  margin: 20px auto 20px;
+  padding: 0 15px;
+}
+
+.searchBar {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #672E13;
+  border-radius: 30px;
+  font-size: 16px;
+  font-family: 'MuseoModerno', sans-serif;
+  background: #FFFDF6;
+  transition: all 0.3s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #F0B66C;
+  box-shadow: 0 0 0 3px rgba(240, 182, 108, 0.3);
+}
+
+.filterControls {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.categorySelect,
+.sortSelect {
+  padding: 10px 15px;
+  border: 2px solid #672E13;
+  border-radius: 25px;
+  background: #FFFDF6;
+  font-size: 14px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.categorySelect:focus,
+.sortSelect:focus {
+  outline: none;
+  border-color: #F0B66C;
+}
+
+/* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+.menuPosition {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 15px;
+  max-width: 1400px;
+  color: #672E13;
+  font-size: 28px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  border-left: 4px solid #F0B66C;
+  padding-left: 20px;
+}
+
+/* ===== СЕТКА ТОВАРОВ ===== */
+.bagels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  justify-items: center;
+  margin: 0 auto;
+  padding: 0 15px 40px;
+  max-width: 1400px;
+  width: 100%;
+}
+
+.bagelItem {
+  background-color: #FFFDF6;
+  width: 100%;
+  max-width: 350px;
+  border-radius: 20px;
+  border: 2px solid #672E13;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(103, 46, 19, 0.1);
+}
+
+.bagelItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(103, 46, 19, 0.2);
+}
+
+.bagelItem img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.bagelItem h3 {
+  margin: 15px;
+  text-align: left;
+  color: #672E13;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.bagelItem p {
+  margin: 0 15px 15px 15px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Детали товара */
+.productDetails {
+  margin: 0 15px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.weight {
+  font-size: 12px;
+  color: #999;
+}
+
+.priceBlock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e67e22;
+}
+
+.oldPrice {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.salePrice {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.saleBadge {
+  background: #e74c3c;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Кнопки */
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  margin: 0 15px 20px;
+}
+
+.cartBtn {
+  flex: 1;
+  background: #672E13;
+  color: #FFFDF6;
+  border: none;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'MuseoModerno', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.cartBtn:hover {
+  background: #F0B66C;
+  transform: translateY(-2px);
+}
+
+.favBtn {
+  background: #FFFDF6;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+  padding: 8px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s;
+}
+
+.favBtn:hover {
+  background: #e74c3c;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Нет товаров */
+.noProducts {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #999;
+}
+
+/* ===== КНОПКА НАВЕРХ ===== */
+.toTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #FFFDF6;
+  box-shadow: 0 2px 8px rgba(103,46,19,0.2);
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #672E13;
+}
+
+.toTopBtn:hover {
+  box-shadow: 0 4px 16px rgba(103,46,19,0.3);
+  transform: scale(1.1);
+}
+
+.toTopBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: #FFFDF6;
+  color: #672E13;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #672E13;
+}
+
+.mediumLogo img {
+  height: 60px;
+  margin-right: 0;
+  order: -1;
+  transition: transform 0.3s;
+}
+
+.mediumLogo img:hover {
+  transform: scale(1.05);
+}
+
+.infoFooter {
+  margin-left: 0;
+}
+
+.infoFooter p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.iconSocial {
+  margin-right: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.iconSocial img {
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconSocial img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (min-width: 768px) {
+  .header {
+    font-size: 18px;
+    padding-top: 15px;
+  }
+  
+  .container {
+    padding: 0 30px;
+    flex-wrap: nowrap;
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .menu ul {
+    gap: 25px;
+  }
+  
+  .menu a {
+    font-size: 16px;
+  }
+  
+  .cartIcon img {
+    height: 35px;
+  }
+  
+  .filtersSection {
+    padding: 0 30px;
+  }
+  
+  .menuPosition {
+    font-size: 32px;
+    padding: 0 30px;
+  }
+  
+  .bagels {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    padding: 0 30px 40px;
+  }
+  
+  .bagelItem {
+    max-width: none;
+  }
+  
+  .bagelItem img {
+    height: 220px;
+  }
+  
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+  
+  .mediumLogo img {
+    height: 70px;
+    order: 0;
+  }
+  
+  .infoFooter p {
+    font-size: 16px;
+  }
+  
+  .toTopBtn {
+    width: 56px;
+    height: 56px;
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding: 0 60px;
+  }
+  
+  .logo img {
+    height: 60px;
+    margin-left: 20px;
+  }
+  
+  .menu ul {
+    gap: 40px;
+  }
+  
+  .cartIcon img {
+    height: 40px;
+    margin-right: 20px;
+  }
+  
+  .filtersSection {
+    padding: 0 60px;
+  }
+  
+  .menuPosition {
+    font-size: 36px;
+    padding: 0 60px;
+  }
+  
+  .bagels {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 0 60px 40px;
+  }
+  
+  .bagelItem img {
+    height: 250px;
+  }
+  
+  .bagelItem h3 {
+    font-size: 22px;
+    margin: 20px;
+  }
+  
+  .bagelItem p {
+    margin: 0 20px 20px 20px;
+    font-size: 15px;
+  }
+  
+  .footer {
+    padding: 20px 50px;
+  }
+  
+  .mediumLogo img {
+    height: 80px;
+    margin-right: 50px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bagels {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .bagelItem img {
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .menu ul {
+    gap: 15px;
+  }
+  
+  .menu a {
+    font-size: 12px;
+  }
+  
+  .filtersSection {
+    margin-top: 20px;
+  }
+  
+  .searchInput {
+    font-size: 14px;
+  }
+  
+  .menuPosition {
+    font-size: 22px;
+    margin-top: 30px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  
+  .infoFooter {
+    order: 2;
+  }
+  
+  .mediumLogo {
+    order: 1;
+  }
+  
+  .iconSocial {
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+  margin-top: 60px;
+}
+  .logo img {
+    height: 35px;
+  }
+  
+  .menu a {
+    font-size: 10px;
+  }
+  
+  .cartIcon img {
+    height: 25px;
+  }
+  
+  .filtersSection {
+    margin-top: 20px;
+    padding: 0 15px;
+  }
+  
+  .filterControls {
+    flex-direction: column;
+  }
+  
+  .categorySelect,
+  .sortSelect {
+    width: 100%;
+  }
+  
+  .menuPosition {
+    font-size: 18px;
+    padding: 0 15px;
+  }
+  
+  .bagels {
+    padding: 0 15px 30px;
+    gap: 20px;
+  }
+  
+  .bagelItem img {
+    height: 180px;
+  }
+  
+  .bagelItem h3 {
+    font-size: 16px;
+    margin: 12px;
+  }
+  
+  .bagelItem p {
+    font-size: 12px;
+    margin: 0 12px 12px 12px;
+  }
+  
+  .price {
+    font-size: 18px;
+  }
+  
+  .cartBtn {
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .favBtn {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+}

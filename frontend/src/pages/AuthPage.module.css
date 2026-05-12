@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  font-family: 'MuseoModerno', sans-serif;
+  background-color: #FFFDF6;
+  margin-top: 80px;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== ХЕДЕР ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #FFFDF6;
+  padding-top: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo img {
+  height: 40px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.menu li {
+  margin: 0;
+}
+
+.menu a {
+  color: #672E13;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #F0B66C;
+}
+
+.menu a p {
+  margin: 0;
+}
+
+.cartIcon img {
+  height: 30px;
+  margin-right: 0;
+  transition: all 0.3s;
+}
+
+.cartIcon img:hover {
+  transform: scale(1.1);
+}
+
+.line {
+  height: 1px;
+  background-color: #672E13;
+  border: none;
+  margin: 10px 0 0 0;
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.authContainer {
+  background: #fff;
+  border: 2px solid #672E13;
+  border-radius: 25px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(103, 46, 19, 0.1);
+  transition: transform 0.3s;
+}
+
+.authContainer:hover {
+  transform: translateY(-5px);
+}
+
+.title {
+  font-size: 32px;
+  color: #672E13;
+  margin: 0 0 10px 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #672E13;
+  opacity: 0.8;
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  color: #672E13;
+  font-weight: 700;
+}
+
+.formGroup input {
+  padding: 15px;
+  border: 2px solid #672E13;
+  border-radius: 15px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 16px;
+  background: #FFFDF6;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.formGroup input:focus {
+  border-color: #F0B66C;
+  box-shadow: 0 0 0 3px rgba(240, 182, 108, 0.3);
+}
+
+.formGroup input::placeholder {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+  background: rgba(211, 47, 47, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.authBtn {
+  background: #672E13;
+  color: #FFFDF6;
+  border: none;
+  border-radius: 20px;
+  padding: 18px;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.authBtn:hover:not(:disabled) {
+  background: #F0B66C;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(103, 46, 19, 0.3);
+}
+
+.authBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.links {
+  text-align: center;
+  margin-top: 25px;
+  color: #672E13;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: #F0B66C;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'MuseoModerno', sans-serif;
+  font-size: 16px;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.toggleBtn:hover {
+  color: #e69c42;
+}
+
+.testCreds {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(103, 46, 19, 0.3);
+  text-align: center;
+}
+
+.testCreds p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.testCreds strong {
+  color: #672E13;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: #FFFDF6;
+  color: #672E13;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #672E13;
+}
+
+.mediumLogo img {
+  height: 60px;
+  margin-right: 0;
+  order: -1;
+  transition: transform 0.3s;
+}
+
+.mediumLogo img:hover {
+  transform: scale(1.05);
+}
+
+.infoFooter {
+  margin-left: 0;
+}
+
+.infoFooter p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.iconSocial {
+  margin-right: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.iconSocial img {
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconSocial img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (min-width: 768px) {
+  
+  .header {
+    font-size: 18px;
+    padding-top: 15px;
+  }
+  
+  .container {
+    padding: 0 30px;
+    flex-wrap: nowrap;
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .menu ul {
+    gap: 25px;
+  }
+  
+  .menu a {
+    font-size: 16px;
+  }
+  
+  .cartIcon img {
+    height: 35px;
+  }
+  
+  .authContainer {
+    padding: 50px;
+  }
+  
+  .title {
+    font-size: 36px;
+  }
+  
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+  
+  .mediumLogo img {
+    height: 70px;
+    order: 0;
+  }
+  
+  .infoFooter p {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding: 0 60px;
+  }
+  
+  .logo img {
+    height: 60px;
+    margin-left: 20px;
+  }
+  
+  .menu ul {
+    gap: 40px;
+  }
+  
+  .cartIcon img {
+    height: 40px;
+    margin-right: 20px;
+  }
+  
+  .authContainer {
+    max-width: 500px;
+    padding: 60px;
+  }
+  
+  .footer {
+    padding: 20px 50px;
+  }
+  
+  .mediumLogo img {
+    height: 80px;
+    margin-right: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+.container{
+  padding: 0 20px;
+}
+
+.page {
+  margin-top: 20px;
+}
+  .authContainer {
+    padding: 25px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+  }
+  
+  .authBtn {
+    padding: 14px;
+    font-size: 16px;
+  }
+  
+  .formGroup input {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  /* Адаптив для хедера */
+  .logo img {
+    height: 35px;
+  }
+  
+  .menu a {
+    font-size: 10px;
+  }
+  
+  .cartIcon img {
+    height: 25px;
+  }
+  
+}
+
+/* Стили для валидации */
+.errorInput {
+  border-color: #d32f2f !important;
+  background-color: rgba(211, 47, 47, 0.05) !important;
+}
+
+.errorInput:focus {
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2) !important;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.successMessage {
+  color: #2e7d32;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Требования к паролю (необязательный компонент) */
+.passwordRequirements {
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.passwordRequirements p {
+  font-size: 11px;
+  margin: 3px 0;
+  color: #666;
+}
+
+.passwordRequirements .valid {
+  color: #2e7d32;
+}
+
+.passwordRequirements .invalid {
+  color: #d32f2f;
+}
