@@ -29,19 +29,8 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// Статические файлы
+// Статические файлы (загруженные изображения)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Для продакшена — отдаём статику React
-if (process.env.NODE_ENV === 'production') {
-  const frontendBuildPath = path.join(__dirname, '../frontend/build');
-  if (fs.existsSync(frontendBuildPath)) {
-    app.use(express.static(frontendBuildPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(frontendBuildPath, 'index.html'));
-    });
-  }
-}
 
 // Настройка multer для загрузки изображений
 const storage = multer.diskStorage({
@@ -878,6 +867,18 @@ app.get('/api/admin/stats', authenticateToken, isAdmin, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// ===== СТАТИКА ДЛЯ ПРОДАКШЕНА (ДОЛЖНА БЫТЬ ПОСЛЕ ВСЕХ API МАРШРУТОВ) =====
+if (process.env.NODE_ENV === 'production') {
+  const frontendBuildPath = path.join(__dirname, '../frontend/build');
+  if (fs.existsSync(frontendBuildPath)) {
+    app.use(express.static(frontendBuildPath));
+    // Этот маршрут должен быть последним - отдаёт фронтенд, если не нашёл API
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    });
+  }
+}
 
 // ===== ЗАПУСК СЕРВЕРА =====
 async function startServer() {
