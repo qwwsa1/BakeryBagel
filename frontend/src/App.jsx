@@ -14,7 +14,7 @@ import InfoPage from './pages/InfoPage';
 
 // ==================== API СЕРВИС ====================
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
+  ? 'https://bakerybagel.up.railway.app/api' 
   : 'http://localhost:5000/api';
 
 const getToken = () => localStorage.getItem('token');
