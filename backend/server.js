@@ -17,7 +17,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here_change_it
 
 // CORS
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://bakerybagel.up.railway.app'],
+  origin: ['http://localhost:3000', 'https://bakerybagel-production.up.railway.app'],
   credentials: true
 }));
 
