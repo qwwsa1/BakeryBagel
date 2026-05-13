@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -15,21 +16,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here_change_it';
 
-// ===== ГЛАВНОЕ ИЗМЕНЕНИЕ ДЛЯ RAILWAY =====
-// CORS - разрешаем запросы с любого источника в продакшене
-const allowedOrigins = [
-  'http://localhost:3000',
-  process.env.FRONTEND_URL || 'https://bakerybagel.up.railway.app'
-].filter(Boolean);
-
+// CORS - разрешаем запросы с фронтенда
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
+  origin: ['http://localhost:3000', 'https://bakerybagel.up.railway.app'],
   credentials: true
 }));
 
@@ -41,16 +30,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Для продакшена — отдаём статику React (если фронт собран)
 if (process.env.NODE_ENV === 'production') {
   const frontendBuildPath = path.join(__dirname, '../frontend/build');
-  app.use(express.static(frontendBuildPath));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendBuildPath, 'index.html'));
-  });
+  if (fs.existsSync(frontendBuildPath)) {
+    app.use(express.static(frontendBuildPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    });
+  }
 }
 
 // Настройка multer для загрузки изображений
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    const uploadDir = './uploads';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
@@ -271,8 +266,7 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-// ==================== ВСЕ ТВОИ API-МАРШРУТЫ ====================
-// (оставляем всё как есть, они не меняются)
+// ==================== АУТЕНТИФИКАЦИЯ ====================
 
 app.post('/api/auth/register', [
   body('email').isEmail().withMessage('Неверный формат email'),
@@ -867,11 +861,10 @@ app.get('/api/admin/stats', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
-// ===== ЗАПУСК СЕРВЕРА (адаптирован для Railway) =====
+// ===== ЗАПУСК СЕРВЕРА =====
 async function startServer() {
   await initDB();
   
-  const fs = require('fs');
   if (!fs.existsSync('./uploads')) {
     fs.mkdirSync('./uploads');
   }
