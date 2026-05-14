@@ -45,9 +45,25 @@ const CartPage = () => {
     const currentItem = cartItems.find(item => item.id === id);
     if (!currentItem) return;
     
-    const newQuantity = Math.max(1, currentItem.quantity + change);
-    setUpdatingId(id);
+    const newQuantity = currentItem.quantity + change;
     
+    // Если новое количество меньше 1, удаляем товар
+    if (newQuantity < 1) {
+      if (!window.confirm('Удалить товар из корзины?')) return;
+      setUpdatingId(id);
+      try {
+        await api.cart.remove(id);
+        await loadCart();
+        showNotification('Товар удален из корзины', 'success');
+      } catch (error) {
+        showNotification('Ошибка при удалении', 'error');
+      } finally {
+        setUpdatingId(null);
+      }
+      return;
+    }
+    
+    setUpdatingId(id);
     try {
       await api.cart.update(id, newQuantity);
       await loadCart();
@@ -95,7 +111,7 @@ const CartPage = () => {
   }, [cartItems.length, showNotification, navigate]);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const deliveryFee = subtotal > 50 ? 0 : 5.99;
+  const deliveryFee = subtotal > 3000 ? 0 : 299;
   const total = subtotal + deliveryFee;
 
   // Если пользователь не авторизован
@@ -306,11 +322,13 @@ const CartPage = () => {
                   <span className={styles.totalAmount}>{total.toFixed(2)} ₽</span>
                 </div>
 
-                {deliveryFee > 0 && (
-                  <div className={styles.freeDeliveryNote}>
-                    * Бесплатная доставка при заказе от 3000 ₽
-                  </div>
-                )}
+                <div className={styles.freeDeliveryNote}>
+                  {deliveryFee === 0 ? (
+                    '🎉 Бесплатная доставка! Спасибо за заказ от 3000 ₽'
+                  ) : (
+                    '🚚 Добавьте товаров ещё на ' + (3000 - subtotal).toFixed(2) + ' ₽ для бесплатной доставки'
+                  )}
+                </div>
               </div>
               
               <button 
