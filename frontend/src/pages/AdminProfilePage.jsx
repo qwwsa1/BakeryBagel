@@ -38,7 +38,6 @@ const AdminProfilePage = () => {
     if (!imagePath) return null;
     
     if (imagePath.includes('/uploads/')) {
-      // На Railway используем относительный путь, на localhost - полный URL
       if (window.location.hostname === 'localhost') {
         return `http://localhost:5000${imagePath}`;
       }
@@ -668,7 +667,9 @@ const AdminProfilePage = () => {
                 <p><strong>Клиент:</strong> {selectedOrderDetails.user_name}</p>
                 <p><strong>Сумма:</strong> {Number(selectedOrderDetails.total_amount).toFixed(2)} ₽</p>
                 <p><strong>Статус:</strong> <span className={getStatusClass(selectedOrderDetails.status)}>{getStatusText(selectedOrderDetails.status)}</span></p>
-                <p><strong>Дата:</strong> {new Date(selectedOrderDetails.created_at).toLocaleString()}</p>
+                <p><strong>Дата заказа:</strong> {new Date(selectedOrderDetails.created_at).toLocaleString()}</p>
+                <p><strong>Дата доставки:</strong> {selectedOrderDetails.delivery_date ? new Date(selectedOrderDetails.delivery_date).toLocaleDateString() : 'Не указана'}</p>
+                <p><strong>Время доставки:</strong> {selectedOrderDetails.delivery_time || 'Не указано'}</p>
                 <p><strong>Адрес доставки:</strong> {selectedOrderDetails.delivery_address}</p>
                 <p><strong>Телефон:</strong> {selectedOrderDetails.phone}</p>
                 {selectedOrderDetails.comment && <p><strong>Комментарий:</strong> {selectedOrderDetails.comment}</p>}
