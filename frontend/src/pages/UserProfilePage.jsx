@@ -117,6 +117,16 @@ const UserProfilePage = () => {
     }
   }, [api.favorites, loadUserData, showNotification]);
 
+  // Добавление товара из избранного в корзину
+  const addToCartFromFavorites = useCallback(async (productId) => {
+    try {
+      await api.cart.add(productId, 1);
+      showNotification('Товар добавлен в корзину!', 'success');
+    } catch (error) {
+      showNotification('Ошибка при добавлении в корзину', 'error');
+    }
+  }, [api.cart, showNotification]);
+
   // Просмотр деталей заказа
   const viewOrderDetails = useCallback(async (order) => {
     setSelectedOrder(order);
@@ -331,9 +341,12 @@ const UserProfilePage = () => {
                         <span className={styles.favoritePrice}>{Number(item.price).toFixed(2)} ₽</span>
                       </div>
                       <div className={styles.favoriteActions}>
-                        <Link to="/menu" className={styles.buyLink}>
+                        <button 
+                          onClick={() => addToCartFromFavorites(item.product_id)}
+                          className={styles.buyLink}
+                        >
                           Купить
-                        </Link>
+                        </button>
                         <button 
                           onClick={() => removeFromFavorites(item.product_id)}
                           className={styles.removeFavBtn}
