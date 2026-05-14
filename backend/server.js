@@ -69,7 +69,6 @@ const upload = multer({
 // Инициализация базы данных
 async function initDB() {
   try {
-    // Создание таблиц
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -692,20 +691,61 @@ app.get('/api/admin/products', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+// ===== ИСПРАВЛЕННЫЙ МАРШРУТ ДОБАВЛЕНИЯ ТОВАРА =====
 app.post('/api/admin/products', authenticateToken, isAdmin, upload.single('image'), async (req, res) => {
-  const { name, description, price, old_price, category_id, weight, calories, is_available, is_on_sale, sale_percent } = req.body;
+  console.log('=== ДОБАВЛЕНИЕ ТОВАРА ===');
+  console.log('req.body:', req.body);
+  console.log('req.file:', req.file);
+  
+  const { 
+    name, description, price, old_price, category_id, 
+    weight, calories, is_available, is_on_sale, sale_percent 
+  } = req.body;
+  
   const image = req.file ? `/uploads/${req.file.filename}` : null;
+  
+  // Преобразуем пустые строки в null для числовых полей
+  const priceNum = price && price !== '' ? parseFloat(price) : null;
+  const oldPriceNum = old_price && old_price !== '' ? parseFloat(old_price) : null;
+  const categoryIdNum = category_id && category_id !== '' ? parseInt(category_id) : null;
+  const caloriesNum = calories && calories !== '' ? parseInt(calories) : null;
+  const salePercentNum = sale_percent && sale_percent !== '' ? parseInt(sale_percent) : null;
+  
+  // Преобразуем строковые значения в булевы
+  const isAvailableBool = is_available === '1' || is_available === 'true' || is_available === true;
+  const isOnSaleBool = is_on_sale === '1' || is_on_sale === 'true' || is_on_sale === true;
+
+  console.log('Парсим данные:');
+  console.log('  name:', name);
+  console.log('  priceNum:', priceNum);
+  console.log('  categoryIdNum:', categoryIdNum);
+  console.log('  isAvailableBool:', isAvailableBool);
 
   try {
     const result = await pool.query(
-      `INSERT INTO products (name, description, price, old_price, category_id, image, weight, calories, is_available, is_on_sale, sale_percent) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-      [name, description, price, old_price, category_id, image, weight, calories, is_available || true, is_on_sale || false, sale_percent]
+      `INSERT INTO products (
+        name, description, price, old_price, category_id, 
+        image, weight, calories, is_available, is_on_sale, sale_percent
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+      [
+        name, 
+        description || null, 
+        priceNum, 
+        oldPriceNum, 
+        categoryIdNum, 
+        image, 
+        weight || null, 
+        caloriesNum, 
+        isAvailableBool, 
+        isOnSaleBool, 
+        salePercentNum
+      ]
     );
     
+    console.log('✅ Товар добавлен! ID:', result.rows[0].id);
     res.json({ message: 'Товар добавлен', id: result.rows[0].id });
   } catch (error) {
-    console.error('Ошибка добавления товара:', error);
+    console.error('❌ Ошибка добавления товара:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -716,7 +756,7 @@ app.put('/api/admin/products/:id', authenticateToken, isAdmin, upload.single('im
 
   try {
     let query = `UPDATE products SET name=$1, description=$2, price=$3, old_price=$4, category_id=$5, weight=$6, calories=$7, is_available=$8, is_on_sale=$9, sale_percent=$10`;
-    const params = [name, description, price, old_price, category_id, weight, calories, is_available, is_on_sale, sale_percent];
+    const params = [name, description, price, old_price, category_id, weight, calories, is_available === '1' || is_available === true, is_on_sale === '1' || is_on_sale === true, sale_percent];
     let paramIndex = 11;
     
     if (image) {
@@ -868,12 +908,11 @@ app.get('/api/admin/stats', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
-// ===== СТАТИКА ДЛЯ ПРОДАКШЕНА (ДОЛЖНА БЫТЬ ПОСЛЕ ВСЕХ API МАРШРУТОВ) =====
+// ===== СТАТИКА ДЛЯ ПРОДАКШЕНА =====
 if (process.env.NODE_ENV === 'production') {
   const frontendBuildPath = path.join(__dirname, '../frontend/build');
   if (fs.existsSync(frontendBuildPath)) {
     app.use(express.static(frontendBuildPath));
-    // Этот маршрут должен быть последним - отдаёт фронтенд, если не нашёл API
     app.get('*', (req, res) => {
       res.sendFile(path.join(frontendBuildPath, 'index.html'));
     });
