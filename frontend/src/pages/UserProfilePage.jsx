@@ -295,7 +295,7 @@ const UserProfilePage = () => {
                         </span>
                       </div>
                       <div className={styles.orderInfo}>
-                        <span className={styles.orderTotal}>{order.total_amount.toFixed(2)} ₽</span>
+                        <span className={styles.orderTotal}>{Number(order.total_amount).toFixed(2)} ₽</span>
                         <span className={getStatusClass(order.status)}>
                           {getStatusText(order.status)}
                         </span>
@@ -328,7 +328,7 @@ const UserProfilePage = () => {
                     <div key={item.id} className={styles.favoriteItem}>
                       <div className={styles.favoriteInfo}>
                         <span className={styles.favoriteName}>{item.name}</span>
-                        <span className={styles.favoritePrice}>{item.price} ₽</span>
+                        <span className={styles.favoritePrice}>{Number(item.price).toFixed(2)} ₽</span>
                       </div>
                       <div className={styles.favoriteActions}>
                         <Link to="/menu" className={styles.buyLink}>
@@ -364,7 +364,7 @@ const UserProfilePage = () => {
                 <h3>Информация о заказе</h3>
                 <p><strong>Статус:</strong> <span className={getStatusClass(selectedOrder.status)}>{getStatusText(selectedOrder.status)}</span></p>
                 <p><strong>Дата:</strong> {new Date(selectedOrder.created_at).toLocaleString()}</p>
-                <p><strong>Сумма:</strong> {selectedOrder.total_amount.toFixed(2)} ₽</p>
+                <p><strong>Сумма:</strong> {Number(selectedOrder.total_amount).toFixed(2)} ₽</p>
                 <p><strong>Адрес доставки:</strong> {selectedOrder.delivery_address}</p>
                 <p><strong>Телефон:</strong> {selectedOrder.phone}</p>
                 {selectedOrder.comment && <p><strong>Комментарий:</strong> {selectedOrder.comment}</p>}
@@ -390,15 +390,15 @@ const UserProfilePage = () => {
                         <tr key={index}>
                           <td>{item.product_name}</td>
                           <td>{item.quantity} шт.</td>
-                          <td>{item.price} ₽</td>
-                          <td>{(item.price * item.quantity).toFixed(2)} ₽</td>
+                          <td>{Number(item.price).toFixed(2)} ₽</td>
+                          <td>{(Number(item.price) * item.quantity).toFixed(2)} ₽</td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
                       <tr>
                         <td colSpan="3" className={styles.totalLabel}>Итого:</td>
-                        <td className={styles.totalAmount}>{selectedOrder.total_amount.toFixed(2)} ₽</td>
+                        <td className={styles.totalAmount}>{Number(selectedOrder.total_amount).toFixed(2)} ₽</td>
                       </tr>
                     </tfoot>
                   </table>
