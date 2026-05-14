@@ -363,7 +363,8 @@ const UserProfilePage = () => {
               <div className={styles.orderInfoSection}>
                 <h3>Информация о заказе</h3>
                 <p><strong>Статус:</strong> <span className={getStatusClass(selectedOrder.status)}>{getStatusText(selectedOrder.status)}</span></p>
-                <p><strong>Дата:</strong> {new Date(selectedOrder.created_at).toLocaleString()}</p>
+                <p><strong>Дата доставки:</strong> {selectedOrder.delivery_date ? new Date(selectedOrder.delivery_date).toLocaleDateString() : 'Не указана'}</p>
+                <p><strong>Время доставки:</strong> {selectedOrder.delivery_time || 'Не указано'}</p>
                 <p><strong>Сумма:</strong> {Number(selectedOrder.total_amount).toFixed(2)} ₽</p>
                 <p><strong>Адрес доставки:</strong> {selectedOrder.delivery_address}</p>
                 <p><strong>Телефон:</strong> {selectedOrder.phone}</p>
