@@ -38,7 +38,11 @@ const AdminProfilePage = () => {
     if (!imagePath) return null;
     
     if (imagePath.includes('/uploads/')) {
-      return `http://localhost:5000${imagePath}`;
+      // На Railway используем относительный путь, на localhost - полный URL
+      if (window.location.hostname === 'localhost') {
+        return `http://localhost:5000${imagePath}`;
+      }
+      return imagePath;
     }
     
     if (imagePath.includes('/images/')) {
@@ -662,7 +666,7 @@ const AdminProfilePage = () => {
               <div className={styles.orderInfoSection}>
                 <h3>Информация о заказе</h3>
                 <p><strong>Клиент:</strong> {selectedOrderDetails.user_name}</p>
-                <p><strong>Сумма:</strong> {selectedOrderDetails.total_amount} ₽</p>
+                <p><strong>Сумма:</strong> {Number(selectedOrderDetails.total_amount).toFixed(2)} ₽</p>
                 <p><strong>Статус:</strong> <span className={getStatusClass(selectedOrderDetails.status)}>{getStatusText(selectedOrderDetails.status)}</span></p>
                 <p><strong>Дата:</strong> {new Date(selectedOrderDetails.created_at).toLocaleString()}</p>
                 <p><strong>Адрес доставки:</strong> {selectedOrderDetails.delivery_address}</p>
@@ -690,15 +694,15 @@ const AdminProfilePage = () => {
                         <tr key={index}>
                           <td>{item.product_name}</td>
                           <td>{item.quantity} шт.</td>
-                          <td>{item.price} ₽</td>
-                          <td>{item.price * item.quantity} ₽</td>
+                          <td>{Number(item.price).toFixed(2)} ₽</td>
+                          <td>{(Number(item.price) * item.quantity).toFixed(2)} ₽</td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
                       <tr>
                         <td colSpan="3" className={styles.totalLabel}>Итого:</td>
-                        <td className={styles.totalAmount}>{selectedOrderDetails.total_amount} ₽</td>
+                        <td className={styles.totalAmount}>{Number(selectedOrderDetails.total_amount).toFixed(2)} ₽</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -723,8 +727,12 @@ const AdminProfilePage = () => {
           <img src="/images/MediumLogo.svg" alt="Логотип" />
         </div>
         <div className={styles.iconSocial}>
-          <img src="/images/Symbol.svg.svg" width="30" alt="Social" />
-          <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="/images/Symbol.svg.svg" width="30" alt="Instagram" />
+          </a>
+          <a href="https://vk.com" target="_blank" rel="noopener noreferrer" aria-label="VK">
+            <img src="/images/vk_symbol.svg.svg" width="30" alt="VK" />
+          </a>
         </div>
       </footer>
     </div>

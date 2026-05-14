@@ -21,12 +21,16 @@ const MenuPage = () => {
   // Состояния для уведомлений
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
-  // Функция для получения правильного URL изображения
+  // Функция для получения правильного URL изображения (ИСПРАВЛЕНА)
   const getImageUrl = useCallback((imagePath) => {
     if (!imagePath) return '/images/med.svg';
     
     if (imagePath.includes('/uploads/')) {
-      return `http://localhost:5000${imagePath}`;
+      // На Railway используем относительный путь, на localhost - полный URL
+      if (window.location.hostname === 'localhost') {
+        return `http://localhost:5000${imagePath}`;
+      }
+      return imagePath;
     }
     
     if (imagePath.includes('/images/')) {
