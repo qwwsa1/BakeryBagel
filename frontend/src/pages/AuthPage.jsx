@@ -259,17 +259,6 @@ const AuthPage = () => {
               </button>
             </p>
           </div>
-
-          {isLogin && (
-            <div className={styles.testCreds}>
-              <p>
-                <strong>Тестовый админ:</strong> admin@example.com / admin123
-              </p>
-              <p>
-                <strong>Тестовый пользователь:</strong> user@example.com / user123
-              </p>
-            </div>
-          )}
         </div>
       </main>
 

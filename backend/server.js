@@ -182,6 +182,8 @@ async function initDB() {
       )
     `);
 
+    
+
     // Добавление тестовых категорий
     const categoriesResult = await pool.query('SELECT COUNT(*) FROM categories');
     if (parseInt(categoriesResult.rows[0].count) === 0) {
@@ -691,7 +693,6 @@ app.get('/api/admin/products', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
-// ===== ИСПРАВЛЕННЫЙ МАРШРУТ ДОБАВЛЕНИЯ ТОВАРА =====
 app.post('/api/admin/products', authenticateToken, isAdmin, upload.single('image'), async (req, res) => {
   console.log('=== ДОБАВЛЕНИЕ ТОВАРА ===');
   console.log('req.body:', req.body);
@@ -704,14 +705,12 @@ app.post('/api/admin/products', authenticateToken, isAdmin, upload.single('image
   
   const image = req.file ? `/uploads/${req.file.filename}` : null;
   
-  // Преобразуем пустые строки в null для числовых полей
   const priceNum = price && price !== '' ? parseFloat(price) : null;
   const oldPriceNum = old_price && old_price !== '' ? parseFloat(old_price) : null;
   const categoryIdNum = category_id && category_id !== '' ? parseInt(category_id) : null;
   const caloriesNum = calories && calories !== '' ? parseInt(calories) : null;
   const salePercentNum = sale_percent && sale_percent !== '' ? parseInt(sale_percent) : null;
   
-  // Преобразуем строковые значения в булевы
   const isAvailableBool = is_available === '1' || is_available === 'true' || is_available === true;
   const isOnSaleBool = is_on_sale === '1' || is_on_sale === 'true' || is_on_sale === true;
 
